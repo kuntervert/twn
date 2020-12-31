@@ -14,8 +14,7 @@
     <td>{{person.surname}}</td>
     <td v-if="person.sex === 'f'">Naine</td>
     <td v-if="person.sex === 'm'">Mees</td>
-    <td>{{person.date}}
-    </td>
+    <td>{{person.personal_code}}</td>
     <td>{{person.phone}}</td>
   </tr>
 </table>
@@ -29,6 +28,7 @@ export default {
   name: "List",
 
   data: () => ({
+    loaded: false,
     page: 1,
   }),
   computed: {
@@ -46,7 +46,10 @@ export default {
     pageEnd: function() {
       return this.pageStart+10;
     }
-  }
+  },
+  
+  methods: {
+  },
 };
 </script>
 
@@ -72,5 +75,9 @@ td {
 }
 table {
   border-spacing: 0;
+}
+tr:hover {
+  color: #ff57a2;
+  cursor: pointer;
 }
 </style>

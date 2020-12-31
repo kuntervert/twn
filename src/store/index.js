@@ -29,6 +29,10 @@ export default new Vuex.Store({
 			await axios.get('http://proovitoo.twn.ee/api/list.json').then((response) => {
 				list = response.data;
 			});
+			list.list.forEach((e) => {
+				console.log(e.personal_code);
+				e.personal_code = getDateFromSSN(e.personal_code);
+			});
 			commit('SET_LIST', list);
 		}
 	},
@@ -41,3 +45,32 @@ export default new Vuex.Store({
 		}
 	}
 });
+
+function getDateFromSSN(code) {
+	let formattedCode = null;
+	let firstNumber = String(code).charAt(0);
+	if (firstNumber == 5 || firstNumber == 6) {
+		formattedCode =
+			'20' +
+			String(code).charAt(1) +
+			String(code).charAt(2) +
+			'.' +
+			String(code).charAt(3) +
+			String(code).charAt(4) +
+			'.' +
+			String(code).charAt(5) +
+			String(code).charAt(6);
+	} else if (firstNumber == 3 || firstNumber == 4) {
+		formattedCode =
+			'19' +
+			String(code).charAt(1) +
+			String(code).charAt(2) +
+			'.' +
+			String(code).charAt(3) +
+			String(code).charAt(4) +
+			'.' +
+			String(code).charAt(5) +
+			String(code).charAt(6);
+	}
+	return formattedCode;
+}
