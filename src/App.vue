@@ -16,10 +16,10 @@
                 </router-link>
               </v-row>
               <v-row class="listRow">
-              <router-link class="navButton" to="List">Nimekiri</router-link>
+                <router-link class="navButton" to="List">Nimekiri</router-link>
               </v-row>
               <v-row class="articleRow">
-              <router-link class="navButton" to="Artikkel">Artikkel</router-link>
+                <router-link class="navButton" to="Artikkel">Artikkel</router-link>
               </v-row>
             </v-col>
 
@@ -46,9 +46,10 @@ export default {
   }),
   created() {
     this.fetchArticle()
+    this.fetchList()
   },
   methods: {
-    ...mapActions(['fetchArticle'])
+    ...mapActions(['fetchList', 'fetchArticle'])
   }
 };
 </script>

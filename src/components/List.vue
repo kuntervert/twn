@@ -1,141 +1,76 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
-      </v-col>
-
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br />please join our online
-          <a href="https://community.vuetifyjs.com" target="_blank"
-            >Discord Community</a
-          >
-        </p>
-      </v-col>
-
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          What's next?
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
-        </v-row>
-      </v-col>
-
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          Important Links
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
-        </v-row>
-      </v-col>
-
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          Ecosystem
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div v-if="listContent">
+    <h2 class="listHeader">NIMEKIRI</h2>
+    <table style="width:100%">
+  <tr>
+    <th>EESNIMI</th>
+    <th>PEREKONNANIMI</th> 
+    <th>SUGU</th>
+    <th>SÜNNIKUUPÄEV</th>
+    <th>TELEFON</th>
+  </tr>
+  <tr class="rows" v-for="(person, index) in paginatedList" :key="index">
+    <td>{{person.firstname}}</td>
+    <td>{{person.surname}}</td>
+    <td v-if="person.sex === 'f'">Naine</td>
+    <td v-if="person.sex === 'm'">Mees</td>
+    <td>{{person.date}}
+    </td>
+    <td>{{person.phone}}</td>
+  </tr>
+</table>
+<v-pagination :total-visible="7" circle v-model="page" :length="listContent.list.length / 10"></v-pagination>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: "List",
 
   data: () => ({
-    ecosystem: [
-      {
-        text: "vuetify-loader",
-        href: "https://github.com/vuetifyjs/vuetify-loader"
-      },
-      {
-        text: "github",
-        href: "https://github.com/vuetifyjs/vuetify"
-      },
-      {
-        text: "awesome-vuetify",
-        href: "https://github.com/vuetifyjs/awesome-vuetify"
+    page: 1,
+  }),
+  computed: {
+    ...mapGetters(['listContent']),
+    paginatedList: function(){
+        return this.listContent.list.slice(this.pageStart, this.pageEnd)
+    },
+    pageStart: function() {
+      if(this.page === 1) {
+        return 0
+      } else {
+        return (this.page-1)*10
       }
-    ],
-    importantLinks: [
-      {
-        text: "Documentation",
-        href: "https://vuetifyjs.com"
-      },
-      {
-        text: "Chat",
-        href: "https://community.vuetifyjs.com"
-      },
-      {
-        text: "Made with Vuetify",
-        href: "https://madewithvuejs.com/vuetify"
-      },
-      {
-        text: "Twitter",
-        href: "https://twitter.com/vuetifyjs"
-      },
-      {
-        text: "Articles",
-        href: "https://medium.com/vuetify"
-      }
-    ],
-    whatsNext: [
-      {
-        text: "Explore components",
-        href: "https://vuetifyjs.com/components/api-explorer"
-      },
-      {
-        text: "Select a layout",
-        href: "https://vuetifyjs.com/getting-started/pre-made-layouts"
-      },
-      {
-        text: "Frequently Asked Questions",
-        href: "https://vuetifyjs.com/getting-started/frequently-asked-questions"
-      }
-    ]
-  })
+    },
+    pageEnd: function() {
+      return this.pageStart+10;
+    }
+  }
 };
 </script>
+
+<style lang="scss" scoped>
+.listHeader {
+  font-weight: 700;
+    font-size: 45px;
+    color: #14cc76;
+    text-align: center;
+    font-family: Booster;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+}
+th {
+  padding-right: 10px;
+  text-align: left;
+  color: #ff57a2;
+  cursor: pointer;
+}
+td {
+  padding:10px 0 10px;
+  border-top: 1px solid black;
+}
+table {
+  border-spacing: 0;
+}
+</style>
