@@ -115,7 +115,7 @@ export default {
 }
 .mainWrapper {
   background: #efefef; 
-  padding-top: 50px; 
-  padding-bottom: 50px;
+  padding-top: 50px !important; 
+  padding-bottom: 50px !important;
 }
 </style>
