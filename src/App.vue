@@ -2,8 +2,8 @@
   <v-app>
     <v-row style="justify-content: center;">
       <v-col cols="10">
-        <div style="background: #efefef; min-width: 1200px; important; height: 100%; position: absolute;"></div>
-        <v-main style="background: #efefef; padding-top: 50px; padding-bottom: 50px;">
+        <div class="backgroundColor"></div>
+        <v-main class="mainWrapper">
 
           <div style="display: flex;">
 
@@ -16,10 +16,10 @@
                 </router-link>
               </v-row>
               <v-row class="listRow">
-                <router-link class="navButton" to="list">Nimekiri</router-link>
+                <router-link class="navButton" to="/list">Nimekiri</router-link>
               </v-row>
               <v-row class="articleRow">
-                <router-link class="navButton" to="artikkel">Artikkel</router-link>
+                <router-link class="navButton" to="/artikkel">Artikkel</router-link>
               </v-row>
             </v-col>
 
@@ -106,5 +106,16 @@ export default {
 }
 .router-link-active {
   color: #14cc76;
+}
+.backgroundColor {
+  background: #efefef; 
+  min-width: 1200px !important;
+  height: 100%; 
+  position: absolute;
+}
+.mainWrapper {
+  background: #efefef; 
+  padding-top: 50px; 
+  padding-bottom: 50px;
 }
 </style>

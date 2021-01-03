@@ -11,14 +11,14 @@ const routes = [
 		component: () => import('../components/Article.vue')
 	},
 	{
-		path: '/list',
+		path: '/list/',
 		name: 'List',
 
 		component: () => import('../components/List.vue')
 	},
 	{
 		path: '/',
-		redirect: '/list'
+		redirect: '/list/'
 	}
 ];
 

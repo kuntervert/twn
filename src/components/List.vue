@@ -24,20 +24,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: "List",
 
   data: () => ({
-    page: 1,
     detailOpen: false,
     lastOpenedDetail: null,
     sortOrder: 0,
-    sortCount: 0,
     chosenSort: null,
   }),
+
   computed: {
-    ...mapGetters(['listContent', 'backupList']),
+    ...mapGetters(['listContent']),
+    page: {
+      get: function () {
+      return parseInt(this.$route.query.page) || 1;
+      },
+      set: function (newPage) {
+        this.$router
+          .push({ query: { ...this.$route.query, page: newPage } })
+          .catch(() => {});
+      }
+    },  
     paginatedList: function(){
         return this.listContent.list.slice(this.pageStart, this.pageEnd)
     },
@@ -49,27 +58,41 @@ export default {
     },
 
   },
-  
+
   methods: {
+    ...mapActions(['fetchList']),
     sortBy(sortedColumn) {
-      this.sortCount++
+      //reset previous sort if user tries sorting a new field
       if(this.chosenSort !== sortedColumn) {
         this.sortOrder = 0
       }
+      // Smallest to highest
       if(this.sortOrder === 0) {
-        this.listContent.list.sort((a, b) => parseFloat(a[sortedColumn]) - parseFloat(b[sortedColumn])); 
-        this.sortOrder = 1
-        this.chosenSort = sortedColumn
+        if(typeof sortedColumn === 'number') {
+          this.listContent.list.sort((a, b) => parseFloat(a[sortedColumn]) - parseFloat(b[sortedColumn])); 
+          this.sortOrder = 1
+          this.chosenSort = sortedColumn 
+        } else {
+          this.listContent.list.sort((a, b) => a[sortedColumn].localeCompare(b[sortedColumn]))
+          this.sortOrder = 1
+          this.chosenSort = sortedColumn 
+        }
+      //Highest to smallest
       } else if (this.sortOrder === 1) {
-        this.listContent.list.sort((a, b) => parseFloat(b[sortedColumn]) - parseFloat(a[sortedColumn]));
-        this.sortOrder = -1 
-        this.chosenSort = sortedColumn
-
+        if(typeof sortedColumn === 'number') {
+          this.listContent.list.sort((a, b) => parseFloat(b[sortedColumn]) - parseFloat(a[sortedColumn]));
+          this.sortOrder = -1 
+          this.chosenSort = sortedColumn
+        } else {
+          this.listContent.list.sort((a, b) => b[sortedColumn].localeCompare(a[sortedColumn]))
+          this.sortOrder = -1
+          this.chosenSort = sortedColumn 
+        }
+      // Reset
       } else {
-        this.listContent = this.backupList
+        this.fetchList()
         this.chosenSort = sortedColumn
-        console.log('tere')
-
+        this.sortOrder = 0
       }
     },
     openDetails(x, id) {
@@ -84,7 +107,7 @@ export default {
         let row = table.insertRow(ind+1);
         row.className = 'detailRow'
         row.innerHTML = "<td colspan='10'> <div id='detailWrapper' style='display: flex; width: 100% !important; height: 165px !important; padding-top: 10px;'> " +
-        ` <img style="max-width: 35%; padding-bottom: 30px; margin-right: 25px;" src='${detailContent[0].images[0].medium}'/>`+ "<div style='max-height: 150px !important;'>" + `${introTruncated}` + "</div>" + "</div>"
+        ` <img style="max-width: 25%; padding-bottom: 30px; margin-right: 25px;" src='${detailContent[0].images[0].medium}'/>`+ "<div style='max-height: 150px !important;'>" + `${introTruncated}` + "</div>" + "</div>"
         
         this.detailOpen = true;
         this.lastOpenedDetail = ind+1
@@ -114,7 +137,8 @@ export default {
       }
       return input;
     }
-  }
+  },
+
 }
 </script>
 
@@ -135,7 +159,7 @@ th {
 }
 td {
   padding:5px 0 5px;
-  border-top: 1px solid black;
+  border-top: 1px solid #d0cdcd;
 
 }
 table {

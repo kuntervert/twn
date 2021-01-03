@@ -15,7 +15,6 @@ export default new Vuex.Store({
 		},
 		SET_LIST(state, list) {
 			state.listContent = list;
-			state.backupList = list;
 		}
 	},
 	actions: {
@@ -35,6 +34,10 @@ export default new Vuex.Store({
 				e.personal_code = getDateFromSSN(e.personal_code);
 			});
 			commit('SET_LIST', list);
+		},
+		resetList({ commit }) {
+			console.log('tere');
+			commit('RESET_LIST');
 		}
 	},
 	getters: {
@@ -43,9 +46,6 @@ export default new Vuex.Store({
 		},
 		listContent(state) {
 			return state.listContent;
-		},
-		backupList(state) {
-			return state.backupList;
 		}
 	}
 });
