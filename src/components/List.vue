@@ -115,7 +115,6 @@ export default {
       } else if(this.lastOpenedDetail !== ind+1) {
         this.closeDetails()
         this.openDetails(x, id)
-
       // close the view
       } else {
         this.closeDetails()

@@ -2,21 +2,21 @@
   <div style="max-width: 100%;" v-if="mainArticle">
       <v-col >
           <v-row>
-              <h2 class="articleHeader">
-                  {{mainArticle.title}}
-              </h2>
+            <h2 class="articleHeader">
+                {{mainArticle.title}}
+            </h2>
           </v-row>
           <v-row>
-                  <p class="intro" v-html="mainArticle.intro"></p>
+            <p class="intro" v-html="mainArticle.intro"></p>
           </v-row>
           <v-row>
-              <v-img :src="mainArticle.images[0].medium" :alt="mainArticle.images[0].alt"/>
+            <v-img :src="mainArticle.images[0].medium" :alt="mainArticle.images[0].alt"/>
           </v-row>
           <v-row>
-              <p v-html="mainArticle.body"></p>
+            <p v-html="mainArticle.body"></p>
           </v-row>
           <v-row>
-              <v-chip color="#ff57a2" text-color="white" v-for="(tag, index) in mainArticle.tags" :key="index">{{tag}}</v-chip>
+            <v-chip color="#ff57a2" text-color="white" v-for="(tag, index) in mainArticle.tags" :key="index">{{tag}}</v-chip>
           </v-row>
       </v-col>
   </div>
@@ -29,20 +29,9 @@
 import {mapGetters} from 'vuex';
 export default {
     name: "Article",
-
-    data: () => ({
-    }),
     computed: {
         ...mapGetters(['mainArticle'])
     },
-    mounted() {
-        
-    },
-    methods: {
-        deBugger() {
-
-        }
-    }
 }
 </script>
 

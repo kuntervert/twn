@@ -6,8 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		mainArticle: null,
-		listContent: null,
-		backupList: null
+		listContent: null
 	},
 	mutations: {
 		SET_ARTICLE(state, article) {
@@ -36,7 +35,6 @@ export default new Vuex.Store({
 			commit('SET_LIST', list);
 		},
 		resetList({ commit }) {
-			console.log('tere');
 			commit('RESET_LIST');
 		}
 	},

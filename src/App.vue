@@ -39,11 +39,6 @@ import {mapActions} from 'vuex';
 export default {
   name: "App",
 
-  components: {
-  },
-
-  data: () => ({
-  }),
   created() {
     this.fetchArticle()
     this.fetchList()
