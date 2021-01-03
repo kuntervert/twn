@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		mainArticle: null,
-		listContent: null
+		listContent: null,
+		backupList: null
 	},
 	mutations: {
 		SET_ARTICLE(state, article) {
@@ -14,6 +15,7 @@ export default new Vuex.Store({
 		},
 		SET_LIST(state, list) {
 			state.listContent = list;
+			state.backupList = list;
 		}
 	},
 	actions: {
@@ -41,6 +43,9 @@ export default new Vuex.Store({
 		},
 		listContent(state) {
 			return state.listContent;
+		},
+		backupList(state) {
+			return state.backupList;
 		}
 	}
 });

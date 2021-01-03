@@ -3,19 +3,19 @@
     <h2 class="listHeader">NIMEKIRI</h2>
     <table id="table" style="width:100%">
   <tr>
-    <th>EESNIMI <v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th> 
-    <th>PEREKONNANIMI<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th> 
-    <th>SUGU<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
-    <th>SÜNNIKUUPÄEV<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
-    <th>TELEFON<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
+    <th @click="sortBy('firstname')">EESNIMI <v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th> 
+    <th @click="sortBy('surname')">PEREKONNANIMI<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th> 
+    <th @click="sortBy('sex')">SUGU<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
+    <th @click="sortBy('personal_code')">SÜNNIKUUPÄEV<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
+    <th @click="sortBy('phone')">TELEFON<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
   </tr>
   <tr :id="index" @click="openDetails(index, person.id)" class="rows" v-for="(person, index) in paginatedList" :key="index">
-    <td @click="sortBy('firstname')">{{person.firstname}}</td>
-    <td @click="sortBy('surname')">{{person.surname}}</td>
-    <td @click="sortBy('sex')" v-if="person.sex === 'f'">Naine</td>
-    <td @click="sortBy('sex')" v-if="person.sex === 'm'">Mees</td>
-    <td @click="sortBy('personal_code')">{{person.personal_code}}</td>
-    <td @click="sortBy('phone')">{{person.phone}}</td>
+    <td>{{person.firstname}}</td>
+    <td>{{person.surname}}</td>
+    <td v-if="person.sex === 'f'">Naine</td>
+    <td v-if="person.sex === 'm'">Mees</td>
+    <td>{{person.personal_code}}</td>
+    <td>{{person.phone}}</td>
   </tr>
     
 </table>
@@ -32,9 +32,12 @@ export default {
     page: 1,
     detailOpen: false,
     lastOpenedDetail: null,
+    sortOrder: 0,
+    sortCount: 0,
+    chosenSort: null,
   }),
   computed: {
-    ...mapGetters(['listContent']),
+    ...mapGetters(['listContent', 'backupList']),
     paginatedList: function(){
         return this.listContent.list.slice(this.pageStart, this.pageEnd)
     },
@@ -43,10 +46,32 @@ export default {
     },
     pageEnd: function() {
       return this.pageStart+10;
-    }
+    },
+
   },
   
   methods: {
+    sortBy(sortedColumn) {
+      this.sortCount++
+      if(this.chosenSort !== sortedColumn) {
+        this.sortOrder = 0
+      }
+      if(this.sortOrder === 0) {
+        this.listContent.list.sort((a, b) => parseFloat(a[sortedColumn]) - parseFloat(b[sortedColumn])); 
+        this.sortOrder = 1
+        this.chosenSort = sortedColumn
+      } else if (this.sortOrder === 1) {
+        this.listContent.list.sort((a, b) => parseFloat(b[sortedColumn]) - parseFloat(a[sortedColumn]));
+        this.sortOrder = -1 
+        this.chosenSort = sortedColumn
+
+      } else {
+        this.listContent = this.backupList
+        this.chosenSort = sortedColumn
+        console.log('tere')
+
+      }
+    },
     openDetails(x, id) {
       let ind = document.getElementById(x).rowIndex
       let table = document.getElementById("table");
@@ -109,7 +134,7 @@ th {
   cursor: pointer;
 }
 td {
-  padding:10px 0 10px;
+  padding:5px 0 5px;
   border-top: 1px solid black;
 
 }
