@@ -16,10 +16,10 @@
                 </router-link>
               </v-row>
               <v-row class="listRow">
-                <router-link class="navButton" to="List">Nimekiri</router-link>
+                <router-link class="navButton" to="list">Nimekiri</router-link>
               </v-row>
               <v-row class="articleRow">
-                <router-link class="navButton" to="Artikkel">Artikkel</router-link>
+                <router-link class="navButton" to="artikkel">Artikkel</router-link>
               </v-row>
             </v-col>
 

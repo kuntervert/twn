@@ -1,24 +1,25 @@
 <template>
   <div v-if="listContent">
     <h2 class="listHeader">NIMEKIRI</h2>
-    <table style="width:100%">
+    <table id="table" style="width:100%">
   <tr>
-    <th>EESNIMI</th>
-    <th>PEREKONNANIMI</th> 
-    <th>SUGU</th>
-    <th>SÜNNIKUUPÄEV</th>
-    <th>TELEFON</th>
+    <th>EESNIMI <v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th> 
+    <th>PEREKONNANIMI<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th> 
+    <th>SUGU<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
+    <th>SÜNNIKUUPÄEV<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
+    <th>TELEFON<v-icon class="sortIcon">mdi-sort-alphabetical-variant</v-icon></th>
   </tr>
-  <tr class="rows" v-for="(person, index) in paginatedList" :key="index">
-    <td>{{person.firstname}}</td>
-    <td>{{person.surname}}</td>
-    <td v-if="person.sex === 'f'">Naine</td>
-    <td v-if="person.sex === 'm'">Mees</td>
-    <td>{{person.personal_code}}</td>
-    <td>{{person.phone}}</td>
+  <tr :id="index" @click="openDetails(index, person.id)" class="rows" v-for="(person, index) in paginatedList" :key="index">
+    <td @click="sortBy('firstname')">{{person.firstname}}</td>
+    <td @click="sortBy('surname')">{{person.surname}}</td>
+    <td @click="sortBy('sex')" v-if="person.sex === 'f'">Naine</td>
+    <td @click="sortBy('sex')" v-if="person.sex === 'm'">Mees</td>
+    <td @click="sortBy('personal_code')">{{person.personal_code}}</td>
+    <td @click="sortBy('phone')">{{person.phone}}</td>
   </tr>
+    
 </table>
-<v-pagination :total-visible="7" circle v-model="page" :length="listContent.list.length / 10"></v-pagination>
+<v-pagination @input="selected = null; closeDetails()" :total-visible="7" circle v-model="page" :length="listContent.list.length / 10"></v-pagination>
   </div>
 </template>
 
@@ -28,8 +29,9 @@ export default {
   name: "List",
 
   data: () => ({
-    loaded: false,
     page: 1,
+    detailOpen: false,
+    lastOpenedDetail: null,
   }),
   computed: {
     ...mapGetters(['listContent']),
@@ -37,11 +39,7 @@ export default {
         return this.listContent.list.slice(this.pageStart, this.pageEnd)
     },
     pageStart: function() {
-      if(this.page === 1) {
-        return 0
-      } else {
-        return (this.page-1)*10
-      }
+      return (this.page-1)*10;
     },
     pageEnd: function() {
       return this.pageStart+10;
@@ -49,8 +47,50 @@ export default {
   },
   
   methods: {
-  },
-};
+    openDetails(x, id) {
+      let ind = document.getElementById(x).rowIndex
+      let table = document.getElementById("table");
+      // Open detail view
+      if(this.detailOpen === false) {
+        let detailContent = this.listContent.list.filter(x => x.id === id);
+        let introText = detailContent[0].intro
+        let introTruncated = this.truncate(introText)
+
+        let row = table.insertRow(ind+1);
+        row.className = 'detailRow'
+        row.innerHTML = "<td colspan='10'> <div id='detailWrapper' style='display: flex; width: 100% !important; height: 165px !important; padding-top: 10px;'> " +
+        ` <img style="max-width: 35%; padding-bottom: 30px; margin-right: 25px;" src='${detailContent[0].images[0].medium}'/>`+ "<div style='max-height: 150px !important;'>" + `${introTruncated}` + "</div>" + "</div>"
+        
+        this.detailOpen = true;
+        this.lastOpenedDetail = ind+1
+      // Open another detail view when there's one open already
+      } else if(this.lastOpenedDetail !== ind+1) {
+        this.closeDetails()
+        this.openDetails(x, id)
+
+      // close the view
+      } else {
+        this.closeDetails()
+      }
+    },
+    closeDetails() {
+      if(this.lastOpenedDetail !== null) {
+        document.getElementById("table").deleteRow(this.lastOpenedDetail);
+        this.detailOpen = false
+        this.lastOpenedDetail = null
+      } else {
+        return
+      }
+      
+    },
+    truncate(input) {
+      if (input.length > 200) {
+        return input.substring(0, 200) + '...';
+      }
+      return input;
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -59,7 +99,6 @@ export default {
     font-size: 45px;
     color: #14cc76;
     text-align: center;
-    font-family: Booster;
     text-transform: uppercase;
     margin-bottom: 60px;
 }
@@ -72,6 +111,7 @@ th {
 td {
   padding:10px 0 10px;
   border-top: 1px solid black;
+
 }
 table {
   border-spacing: 0;
@@ -79,5 +119,14 @@ table {
 tr:hover {
   color: #ff57a2;
   cursor: pointer;
+
+}
+.detailRow {
+    min-height: 165px !important;
+    max-width: 615px !important;
+}
+.sortIcon {
+color: #ff57a2;
+padding-bottom: 5px;
 }
 </style>

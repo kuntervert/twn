@@ -30,7 +30,6 @@ export default new Vuex.Store({
 				list = response.data;
 			});
 			list.list.forEach((e) => {
-				console.log(e.personal_code);
 				e.personal_code = getDateFromSSN(e.personal_code);
 			});
 			commit('SET_LIST', list);
