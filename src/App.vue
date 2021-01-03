@@ -4,29 +4,28 @@
       <v-col cols="10">
         <div class="backgroundColor"></div>
         <v-main class="mainWrapper">
-
           <div style="display: flex;">
-
             <!-- Left menu column -->
             <v-col class="menuColumn">
               <v-row>
                 <router-link class="logoWrapper" to="/">
-                  <v-img class="logo" src="./assets/logo.svg">
-                  </v-img>
+                  <v-img class="logo" src="./assets/logo.svg"> </v-img>
                 </router-link>
               </v-row>
               <v-row class="listRow">
                 <router-link class="navButton" to="/list">Nimekiri</router-link>
               </v-row>
               <v-row class="articleRow">
-                <router-link class="navButton" to="/artikkel">Artikkel</router-link>
+                <router-link class="navButton" to="/artikkel"
+                  >Artikkel</router-link
+                >
               </v-row>
             </v-col>
 
             <!-- Components column -->
             <v-col class="rightColumn">
-            <router-view style="padding: 0 60px;"></router-view>
-          </v-col>
+              <router-view style="padding: 0 60px;"></router-view>
+            </v-col>
           </div>
         </v-main>
       </v-col>
@@ -35,16 +34,16 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import { mapActions } from "vuex";
 export default {
   name: "App",
 
   created() {
-    this.fetchArticle()
-    this.fetchList()
+    this.fetchArticle();
+    this.fetchList();
   },
   methods: {
-    ...mapActions(['fetchList', 'fetchArticle'])
+    ...mapActions(["fetchList", "fetchArticle"])
   }
 };
 </script>
@@ -56,22 +55,22 @@ export default {
   min-width: 300px !important;
 }
 .rightColumn {
-  position: relative; 
+  position: relative;
   width: 50%;
   flex-grow: 1;
 }
 .logoWrapper {
   position: absolute;
   margin: 0 auto 20px;
-    padding: 0 35px;
+  padding: 0 35px;
 }
 .logo {
   width: 90%;
-  transition: 0.25s ;
-    -moz-transition: width 0.25s ; /* Firefox 4 */
-    -webkit-transition: width 0.25s ; /* Safari and Chrome */
-    -o-transition: 0.25s ; /* Opera */
-    -ms-transition: 0.25s ; /* Explorer 10 */
+  transition: 0.25s;
+  -moz-transition: width 0.25s; /* Firefox 4 */
+  -webkit-transition: width 0.25s; /* Safari and Chrome */
+  -o-transition: 0.25s; /* Opera */
+  -ms-transition: 0.25s; /* Explorer 10 */
 }
 .logo:hover {
   width: 98% !important;
@@ -83,17 +82,17 @@ export default {
 .articleRow {
   justify-content: flex-end;
 }
-.navButton{
-      display: block;
-    text-decoration: none;
-    line-height: 120%;
-    color: #333;
-    position: relative;
-    text-align: right;
-    overflow: hidden;
-    font-size: 24px;
-    padding: 15px 35px;
-    text-transform: uppercase;
+.navButton {
+  display: block;
+  text-decoration: none;
+  line-height: 120%;
+  color: #333;
+  position: relative;
+  text-align: right;
+  overflow: hidden;
+  font-size: 24px;
+  padding: 15px 35px;
+  text-transform: uppercase;
 }
 .navButton:hover {
   font-weight: 600;
@@ -103,14 +102,14 @@ export default {
   color: #14cc76;
 }
 .backgroundColor {
-  background: #efefef; 
+  background: #efefef;
   min-width: 1200px !important;
-  height: 100%; 
+  height: 100%;
   position: absolute;
 }
 .mainWrapper {
-  background: #efefef; 
-  padding-top: 50px !important; 
+  background: #efefef;
+  padding-top: 50px !important;
   padding-bottom: 50px !important;
 }
 </style>
