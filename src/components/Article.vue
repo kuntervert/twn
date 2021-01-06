@@ -55,11 +55,11 @@ export default {
   font-weight: 900;
 }
 p {
-  margin: 40px 0 !important;
+  margin: 40px 0;
   line-height: 150%;
   font-size: 24px;
 }
 .v-chip {
-  margin-right: 10px !important;
+  margin-right: 10px;
 }
 </style>

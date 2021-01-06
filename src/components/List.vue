@@ -208,8 +208,8 @@ tr:hover {
   cursor: pointer;
 }
 .detailRow {
-  min-height: 165px !important;
-  max-width: 615px !important;
+  min-height: 165px;
+  max-width: 615px;
 }
 .sortIcon {
   color: #ff57a2;

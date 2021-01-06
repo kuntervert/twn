@@ -50,9 +50,9 @@ export default {
 
 <style lang="scss" scoped>
 .menuColumn {
-  flex: 0 0 300px !important;
+  flex: 0 0 300px;
   background: #efefef;
-  min-width: 300px !important;
+  min-width: 300px;
 }
 .rightColumn {
   position: relative;
@@ -73,7 +73,7 @@ export default {
   -ms-transition: 0.25s; /* Explorer 10 */
 }
 .logo:hover {
-  width: 98% !important;
+  width: 98%;
 }
 .listRow {
   margin-top: 150px;
@@ -103,7 +103,7 @@ export default {
 }
 .backgroundColor {
   background: #efefef;
-  min-width: 1200px !important;
+  min-width: 1200px;
   height: 100%;
   position: absolute;
 }
